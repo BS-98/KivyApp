@@ -1,0 +1,144 @@
+<MainWindow>:
+    orientation: "vertical"
+    my_map: map
+    data_layer: layer
+    wykres: plots
+    tekst: stat
+    
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            orientation: 'vertical'
+            MapView:
+                id: map
+                MarkerMapLayer:
+                    id: layer
+        BoxLayout:
+            height: "40dp"
+            size_hint_y: None
+            orientation: 'horizontal'
+            
+            Button:
+                size_hint_x: 25
+                text: "Wczytaj plik"
+                on_press: root.show_load()
+                
+             
+        
+            Button:
+                size_hint_x: 25
+                text: "Generuj trase"
+                on_press: root.generuj_trase()
+            
+            Button:
+                size_hint_x: 25
+                text: "Usun trase"
+                on_press: root.usun_trase()
+                
+        BoxLayout:
+            height: "40dp"
+            size_hint_y: None
+            orientation: 'horizontal'
+            
+            Button:
+                size_hint_x: 25
+                text: "Wiecej wykresow"
+                on_release: 
+                    app.root.current = "ww"
+                    root.manager.transition.direction = "left"
+                    
+            Button:
+                size_hint_x: 25
+                text: "Wiecej statystyk"
+                on_release: 
+                    app.root.current = "ws"
+                    root.manager.transition.direction = "left"
+                
+        BoxLayout:
+            orientation: 'horizontal'
+            height: "210dp"
+            size_hint_y: None
+            BoxLayout:
+                id: plots
+                
+            BoxLayout:
+                TextInput:
+                    id: stat
+                
+        
+<Okno>:
+    Label:
+        text: "Najpierw wczytaj plik!"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "y":0.4}               
+            
+            
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Anuluj"
+                on_release: root.cancel()
+
+            Button:
+                text: "Wczytaj"
+                on_release: root.load(filechooser.path, filechooser.selection)                    
+        
+
+
+<WiecejWykresow>:
+    name:"ww"
+    wykresy: plots
+    orientation: "horizontal"
+            
+    FloatLayout:
+        pos_hint: {"top":1}
+        id: plots
+                
+    BoxLayout:
+        height: 30
+        size_hint_y: None
+        Button:
+            text: "Rysuj"
+            on_release: root.wykres()
+        Button:
+            text: "Wroc"
+            on_release: 
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+        
+                    
+<WiecejStatystyk>:    
+    name: "ws"
+    tab: tabelka
+    
+    BoxLayout:
+        TextInput:
+            id: tabelka  
+            multiline: True
+            readonly: True
+            
+    BoxLayout:
+        height: 30
+        size_hint_y: None
+        
+        Button:
+            text: "Pokaz statystyki"
+            on_press: root.statystyka()
+        
+        Button:
+            text: "Wroc"
+            on_release: 
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+            
+                
+            
